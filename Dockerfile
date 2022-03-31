@@ -1,15 +1,9 @@
 # Docker inheritance
-FROM bioconductor/bioconductor_docker:devel
-
-RUN apt-get update
-RUN R -e 'BiocManager::install(ask = F)' && R -e 'BiocManager::install(c("magick", \
-    "tidyverse", "vroom", "VennDiagram", \
-    "Biostrings", "corrplot", ask = F))' \
-	&& R -e 'tinytex::install_tinytex()' \
-	&& R -e 'install.packages("dplyr")'
+FROM r-base:latest
 
 ### Install asciinema
-RUN apt-get install -y  \
-asciinema 
+RUN apt-get update && apt-get install -y  \
+asciinema
 
-
+RUN Rscript -e 'install.packages("BiocManager")'
+RUN Rscript -e 'install.packages(BiocManager::install(c("GenomicFeatures")))'
